@@ -6,6 +6,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 导入全局样式
 import './styles/index.less'
+// 加载nprogress中指定的样式文件
+// 注意：加载第三方包中的具体文件不需要写具体路径，直接写包名
+// 总结："包名/具体文件路径"
+import 'nprogress/nprogress.css'
 
 Vue.use(ElementUI)
 // 全局注册element组件库
