@@ -20,7 +20,9 @@ npm run build
 npm run lint
 ```
 
-![](E:\contenthub\contenthub-admin\images\1.png)
 
 
+![image](https://github.com/asteryxxx/contenthub-admin/blob/master/images/1.png)
+
+![image](images/1.png)
 
