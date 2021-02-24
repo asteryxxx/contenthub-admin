@@ -59,14 +59,18 @@ router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem('user'))
   // 校验非登陆界面的登陆状态
   if (to.path !== '/login') {
+    console.log('不是login页面...')
     if (user) {
+      console.log('有user...')
       // 说明已经登陆了 通过
       next()
     } else {
+      console.log('没有user...')
       // 没有登陆跳登陆界面
       next('/login')
     }
   } else {
+    console.log('是login页面...')
     // 登陆界面，正常放行
     next()
   }

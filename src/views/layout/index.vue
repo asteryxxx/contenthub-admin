@@ -57,7 +57,6 @@ export default {
       // 请求获取用户资料
       const res = await getUserProfile()
       this.user = res.data
-      console.log(res)
     },
     onLogout () {
       this.$confirm('确定要退出吗', '退出提示', {
