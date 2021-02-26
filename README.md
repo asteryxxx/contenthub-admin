@@ -22,7 +22,7 @@ npm run lint
 
 
 
-![image](https://github.com/asteryxxx/contenthub-admin/blob/master/images/1.png)
+![image](https://gitee.com/asteryxxx/my_-images/blob/master/1.jpg)
 
-![image](images/1.png)
+![image](https://gitee.com/asteryxxx/my_-images/blob/master/11.jpg)
 
