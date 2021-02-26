@@ -19,3 +19,11 @@ export const getUserProfile = () => {
     url: '/users/profile'
   })
 }
+
+// 验证token是否有效
+export const testToken = () => {
+  return request({
+    method: 'GET',
+    url: '/testtoken'
+  })
+}

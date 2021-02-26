@@ -55,8 +55,14 @@ export default {
   methods: {
     async loadUserProfile () {
       // 请求获取用户资料
-      const res = await getUserProfile()
-      this.user = res.data
+      try {
+        const res = await getUserProfile()
+        this.user = res.data
+      } catch (error) {
+        const er = { ...error }
+        this.$message.error(er.response.data + ' 请重新登陆哈O(∩_∩)O~')
+        this.$router.push('/login')
+      }
     },
     onLogout () {
       this.$confirm('确定要退出吗', '退出提示', {

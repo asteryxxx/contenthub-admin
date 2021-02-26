@@ -111,8 +111,15 @@
         label="操作">
       <!-- 如果需要自定义表格列表模板，则需要把自定义的内容放到template里面 -->
         <template slot-scope='scope'>
-         <el-button type="primary" icon="el-icon-edit" circle></el-button>
          <el-button
+          size='mini'
+          type="primary"
+          icon="el-icon-edit"
+          circle
+          @click='$router.push("/publish?id="+scope.row.id)'
+         ></el-button>
+         <el-button
+          size='mini'
           type="danger"
           icon="el-icon-delete"
           circle
@@ -165,7 +172,7 @@ export default {
       end_pubdate: null, // 结束时间
       loading: true, // 表单数据加载中loading
       currentPage: 1, // 当前页码
-      page: 1
+      page: 1 // 当前页码
     }
   },
   created () {
