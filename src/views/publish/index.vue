@@ -18,8 +18,13 @@
         </el-form-item>
         <el-form-item label="内容" prop='content'>
           <el-col :span="16">
-            <el-input type="textarea" v-model="article.content">
-            </el-input>
+            <el-tiptap
+             v-model="article.content"
+             :extensions="extensions"
+             height="350"
+            />
+            <!-- <el-input type="textarea" v-model="article.content">
+            </el-input> -->
           </el-col>
         </el-form-item>
       <el-form-item label="频道:" prop='channel_id'>
@@ -49,6 +54,29 @@
   </div>
 </template>
 <script>
+// import element-tiptap 样式
+import 'element-tiptap/lib/index.css'
+import {
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Image,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+  TodoItem,
+  TodoList,
+  HorizontalRule,
+  Fullscreen,
+  Preview,
+  CodeBlock
+} from 'element-tiptap'
+import { uploadDraft } from '@/api/upload'
 import { getChannelsList } from '@/api/channel'
 import {
   addArticle,
@@ -60,6 +88,42 @@ export default {
   name: 'PublishIndex',
   data () {
     return {
+    // 编辑器的 extensions
+    // 它们将会按照你声明的顺序被添加到菜单栏和气泡菜单中
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Heading({ level: 3 }),
+        new Bold({ bubble: true }), // 在气泡菜单中渲染菜单按钮
+        new Image({
+          // 【只要上传图片就会触发uploadRequest这个方法】
+          // 上传图片默认会把图片生成base64
+          // 字符串和内容会存在一起，最好我们把图片自定义上传
+          // 当我们上传图片的时候就会触发这个方法，名字可以自定义
+          async uploadRequest (file) {
+            console.log('uploadrequest...')
+            const fd = new FormData()
+            fd.append('moments', file)
+            const res = await uploadDraft(fd)
+            console.log(res.data.url)
+            return res.data.url
+            // return后面跟的是显示图片的地址
+          }
+        }),
+        new Underline(), // 下划线
+        new Italic(), // 斜体
+        new Strike(), // 删除线
+        new HorizontalRule(), // 华丽的分割线
+        new ListItem(),
+        new BulletList(), // 无序列表
+        new OrderedList(), // 有序列表
+        new TodoItem(),
+        new TodoList(),
+        new Fullscreen(),
+        new Preview(),
+        new CodeBlock()
+      ],
       channels: [], // 文章频道列表
       article: {
         title: '', // 文章标题
@@ -70,10 +134,23 @@ export default {
       },
       rules: {
         title: [
-          { required: true, message: '标题不能为空', trigger: 'change' }
+          { required: true, message: '标题不能为空', trigger: 'change' },
+          { min: 3, max: 50, message: '标题在 3 到 50 个字符', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '内容不能为空', trigger: 'change' }
+          {
+            // 这种是防止输入了，然后删除为空的情况
+            validator: (rule, value, callback) => {
+              console.log('validator...')
+              if (value === '<p></p>') {
+                callback(new Error('文章内容不能为空哦'))
+              } else {
+                callback()
+              }
+            }
+          },
+          // 这种是防止一开始就为空的情况
+          { required: true, message: '文章内容不能为空', trigger: 'blur' }
         ],
         channel_id: [
           { required: true, message: '请选择频道', trigger: 'change' }

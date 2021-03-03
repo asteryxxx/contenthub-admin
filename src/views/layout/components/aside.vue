@@ -19,7 +19,7 @@
         <i class="el-icon-menu"></i>
         <span slot="title">内容管理</span>
       </el-menu-item>
-      <el-menu-item index="/images">
+      <el-menu-item index="/materials">
         <i class="iconfont iconimages"></i>
         <span slot="title">素材管理</span>
       </el-menu-item>

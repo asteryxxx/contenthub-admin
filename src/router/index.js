@@ -8,6 +8,7 @@ const Home = () => import('@/views/home')
 const Layout = () => import('@/views/layout')
 const Article = () => import('@/views/article')
 const Publish = () => import('@/views/publish')
+const Materials = () => import('@/views/materials')
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [
         path: '/publish',
         name: 'publish',
         component: Publish
+      },
+      {
+        path: '/materials',
+        name: 'materials',
+        component: Materials
       }
     ]
   }
