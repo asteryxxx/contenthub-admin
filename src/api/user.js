@@ -27,3 +27,19 @@ export const testToken = () => {
     url: '/testtoken'
   })
 }
+// 修改用户信息
+export const updateUser = (data) => {
+  return request({
+    method: 'PATCH',
+    url: '/users/update',
+    data
+  })
+}
+// 修改头像
+export const uploadAvatar = data => {
+  return request({
+    method: 'POST',
+    url: '/upload/avatar',
+    data
+  })
+}

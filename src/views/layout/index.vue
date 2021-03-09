@@ -25,7 +25,9 @@
            下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
          </span> -->
          <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人设置</el-dropdown-item>
+          <el-dropdown-item
+            @click.native='$router.push("settings")'
+          >个人设置</el-dropdown-item>
           <el-dropdown-item
             @click.native='onLogout'
           >用户退出</el-dropdown-item>
@@ -43,7 +45,7 @@
 import AppAside from './components/aside'
 // <AppAside/> 或者驼峰 <app-aside/>
 import { getUserProfile } from '@/api/user'
-
+import gloalbus from '@/utils/gloalbus'
 export default {
   name: 'LayoutIndex',
   data () {
@@ -55,14 +57,8 @@ export default {
   methods: {
     async loadUserProfile () {
       // 请求获取用户资料
-      try {
-        const res = await getUserProfile()
-        this.user = res.data
-      } catch (error) {
-        const er = { ...error }
-        this.$message.error(er.response.data + ' 请重新登陆哈O(∩_∩)O~')
-        this.$router.push('/login')
-      }
+      const res = await getUserProfile()
+      this.user = res.data
     },
     onLogout () {
       this.$confirm('确定要退出吗', '退出提示', {
@@ -88,6 +84,11 @@ export default {
   created () {
     this.loadUserProfile()
     // 初始化用户信息
+    gloalbus.$on('update-user', data => {
+      console.log(data)
+      // 这里不要this.user = data因为是引用类型会影响到对方
+      this.user.avatar_url = data.avatar_url
+    })
   }
 }
 </script>

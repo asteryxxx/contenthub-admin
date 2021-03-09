@@ -2,7 +2,9 @@
  * 基于axios封装的模块
  */
 import axios from 'axios'
-
+import router from '@/router'
+// 如果是非组件模块中使用的话就要单独的加载它router模块
+import { Message } from 'element-ui'
 const request = axios.create({
   baseURL: 'http://localhost:8888/'
 })
@@ -21,6 +23,34 @@ request.interceptors.request.use(config => {
   // Do something with request error
   return Promise.reject(error)
 })
+request.interceptors.response.use(
+  function (response) {
+    console.log('200')
+    // 响应码为2xx的都会进入到这里
+    // 一定要把响应结果return
+    return response
+  },
+  function (error) {
+    const { status } = error.response
+    console.log('异常了：' + error)
+    if (error.response && status === 401) {
+      window.localStorage.removeItem('user')
+      // 清除本地存储的用户登陆状态
+      // 重新登陆
+      router.push('/login')
+      Message.error('登陆状态无效,重新登陆~')
+    } else if (error.response && status === 500) {
+      Message.error('上传图片失败~')
+    } else if (error.response && status === 403) {
+      Message.error('你没有具备操作的权限~')
+    } else if (error.response && status >= 500) {
+      Message.error('服务端内部异常~')
+    } else if (error.response && status === 400) {
+      Message.error('参数错误，请检查~')
+    }
+    return Promise.reject(error)
+  }
+)
 // 请求拦截器【所有需要授权的接口都会经过拦截器直接处理了】
 /* instance.interceptors.request.use(config => {
   //    console.log(config);

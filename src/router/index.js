@@ -9,6 +9,8 @@ const Layout = () => import('@/views/layout')
 const Article = () => import('@/views/article')
 const Publish = () => import('@/views/publish')
 const Materials = () => import('@/views/materials')
+const Comment = () => import('@/views/comment')
+const Settings = () => import('@/views/mysetting')
 
 Vue.use(VueRouter)
 
@@ -44,6 +46,16 @@ const routes = [
         path: '/materials',
         name: 'materials',
         component: Materials
+      },
+      {
+        path: '/comment',
+        name: 'comment',
+        component: Comment
+      },
+      {
+        path: '/settings',
+        name: 'settings',
+        component: Settings
       }
     ]
   }

@@ -69,3 +69,21 @@ export const updateArticle = (data, id) => {
     ]
   })
 }
+// 展示文章的评论状态
+export const getShowmomentCommstatus = (params) => {
+  return request({
+    method: 'GET',
+    url: '/comment/momentStatus',
+    params
+  })
+}
+// 修改文章的评论状态
+export const updatemomentCommStatus = (id, allowComment) => {
+  return request({
+    method: 'PATCH',
+    url: '/comment/momentStatus/' + id,
+    data: {
+      allow_comment: allowComment
+    }
+  })
+}

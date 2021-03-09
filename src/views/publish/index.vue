@@ -10,7 +10,9 @@
       </div>
         <!-- /面包屑路径导航 -->
       <!-- 表单 -->
-      <el-form ref="form" :model="article" :rules="rules" label-width="auto">
+      <el-form ref="form" :model="article" :rules="rules" label-width="auto"
+       
+      >
         <el-form-item label="标题" prop='title' >
           <el-col :span="8">
             <el-input v-model="article.title" ></el-input>
@@ -38,11 +40,55 @@
       </el-select>
       </el-form-item>
         <el-form-item label="封面">
-          <el-radio-group v-model="article.type">
-            <el-radio :label="0">无图</el-radio>
-            <el-radio :label="1">单图</el-radio>
-            <el-radio :label="3">三图</el-radio>
-          </el-radio-group>
+          <div>
+            <el-radio-group v-model="article.cover.type">
+              <el-radio :label="0">无图</el-radio>
+              <el-radio :label="1">单图</el-radio>
+              <el-radio :label="3">三图</el-radio>
+            </el-radio-group>
+          </div>
+          <!-- <template v-if="article.cover.type>0"> -->
+            <el-button type="primary" size='small'
+              v-if="article.cover.type>0"
+              @click='handlerbtnUpload'
+            >点我上传封面
+              <i class="el-icon-upload el-icon--right"></i>
+            </el-button>
+            <el-button type="success"  size='small'
+             v-if="article.cover.type>0"
+             @click='handlerbtnclear'
+            >
+              清空图片，重新上传
+            </el-button>
+            <template v-show="isbtnUpload">
+              <!-- 这里用v-if第一次的时候还没存在这个组件
+              用v-show就会存在，但是没激活的情况 -->
+              <upload-cover
+                 :limitnum='article.cover.type'
+                 @upload-success='onLoadSuccess($event)'
+                 ref="uc"
+              >
+              <!-- $event就是上传过来的url -->
+            </upload-cover>
+          </template>
+          <template v-if="uploadsuccess">
+          <div>
+            <span class="block" v-for="fit in article.cover.imagesPath" :key='fit'>
+              <el-image
+                style="width: 120px; height: 120px"
+                :src="fit"
+                :fit="fit"></el-image>
+            </span>
+          </div>
+          </template>
+           <!-- <template v-if="uploadsuccess">
+              <img
+                v-for="(index,img) in uploadsuccessArr" 
+                :src='img'
+                @update-success='onSuccessCover($event)'
+              >
+              $event就是上传过来的url
+          </template> -->
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm(2)">
@@ -77,12 +123,14 @@ import {
   CodeBlock
 } from 'element-tiptap'
 import { uploadDraft } from '@/api/upload'
+// moments
 import { getChannelsList } from '@/api/channel'
 import {
   addArticle,
   getArticleById,
   updateArticle
 } from '@/api/article'
+import UploadCover from '@/views/publish/components/UploadCover'
 
 export default {
   name: 'PublishIndex',
@@ -129,6 +177,10 @@ export default {
         title: '', // 文章标题
         content: '', // 文章内容
         type: 0, // 封面类型
+        cover: {
+          type: 3,
+          imagesPath: []
+        },
         channel_id: null,
         status: 2 // 2代表直接发表文章的状态
       },
@@ -155,15 +207,36 @@ export default {
         channel_id: [
           { required: true, message: '请选择频道', trigger: 'change' }
         ]
-      }
+      },
+      uploadsuccess: false,
+      isbtnUpload: false
     }
   },
+  components: {
+    UploadCover
+  },
   methods: {
+    handlerbtnclear () {
+      this.article.cover.imagesPath = []
+      this.uploadsuccess = false
+    },
+    handlerbtnUpload () {
+      this.isbtnUpload = true
+      this.$refs.uc.dialogVisible = true
+    },
     submitForm (status) {
       console.log('想提交的方式' + status)
       // 直接发表文章
       this.article.status = status
       this.submitArticle('form')
+    },
+    onLoadSuccess ($event) {
+      const { arr, uploadSuccess } = $event
+      this.uploadsuccess = uploadSuccess
+      this.article.cover.imagesPath = arr
+    },
+    onUpdateCover (index, $event) {
+      this.article.cover.imagesPath[index - 1] = $event
     },
     submitArticle (FormName) {
       this.$refs[FormName].validate(valid => {
@@ -236,4 +309,11 @@ export default {
 }
 </script>
 <style scoped lang='less'>
+.block{
+  display: inline-block;
+  border:1px solid black;
+  margin-right: 1px;
+  width: 120px;
+  height: 120px;
+}
 </style>
