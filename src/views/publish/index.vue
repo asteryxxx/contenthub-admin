@@ -30,7 +30,11 @@
           </el-col>
         </el-form-item>
       <el-form-item label="频道:" prop='channel_id'>
-       <el-select v-model="article.channel_id" placeholder="请选择频道">
+       <el-select v-model="article.channel_id" 
+         placeholder="请选择频道"
+         @change="$forceUpdate()"
+       >
+       <!-- el-select不更新问题@change="$forceUpdate()" -->
         <el-option
           :label="channel.name "
           :value="channel.id"
@@ -176,9 +180,8 @@ export default {
       article: {
         title: '', // 文章标题
         content: '', // 文章内容
-        type: 0, // 封面类型
         cover: {
-          type: 3,
+          type: 1,
           imagesPath: []
         },
         channel_id: null,
@@ -250,6 +253,7 @@ export default {
       // 判断有没id，有就是修改文章，否则就添加
       const articleId = this.$route.query.id
       if (articleId) {
+        console.log('update...')
         // 执行修改操作
         updateArticle(this.article, articleId).then(res => {
           this.$message({
@@ -263,6 +267,7 @@ export default {
           this.$message.error(message)
         })
       } else {
+        console.log('new....')
         addArticle(this.article).then(res => {
           this.$message({
             showClose: true,
@@ -286,11 +291,13 @@ export default {
       try {
         // 显示要修改之前的数据
         const res = await getArticleById(this.$route.query.id)
+        console.log(res.data.data)
         const { cover, channel } = res.data.data
+        console.log(channel.id)
         this.article = res.data.data
-        this.article.type = parseInt(JSON.parse(cover).type)
-        // 要把cover转成对象形式,而且他下拉框接受的是数字，我们要转一下
-        // 因为我们存的是 type:'0' 字符串
+        this.article.cover = JSON.parse(cover)
+        this.article.cover.type = parseInt(this.article.cover.type)
+        // 要把cover转成对象形式,而且他下拉框接受的是数字
         this.article.channel_id = channel.id
       } catch (error) {
         const er = { ...error }
@@ -304,6 +311,7 @@ export default {
     // 所以要判断路由路径参数中是否有id，有就展示文章内容
     if (this.$route.query.id) {
       this.loadArticleById()
+      this.uploadsuccess = true
     }
   }
 }

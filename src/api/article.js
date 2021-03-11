@@ -25,8 +25,9 @@ export const addArticle = data => {
   return request({
     method: 'POST',
     url: '/moment',
-    data,
-    headers: {
+    data
+  })
+/*    headers: {
       'Content-type': 'application/x-www-form-urlencoded'
     },
     // 设置form - data请求格式
@@ -39,7 +40,7 @@ export const addArticle = data => {
         return ret
       }
     ]
-  })
+  }) */
 }
 // 获取指定的文章根据文章id
 export const getArticleById = id => {
@@ -53,20 +54,7 @@ export const updateArticle = (data, id) => {
   return request({
     method: 'PATCH',
     url: `/moment/${id}`,
-    data,
-    headers: {
-      'Content-type': 'application/x-www-form-urlencoded'
-    },
-    // 设置form - data请求格式
-    transformRequest: [
-      data => {
-        let ret = ''
-        for (const rr in data) {
-          ret += encodeURIComponent(rr) + '=' + encodeURIComponent(data[rr]) + '&'
-        }
-        return ret
-      }
-    ]
+    data
   })
 }
 // 展示文章的评论状态
