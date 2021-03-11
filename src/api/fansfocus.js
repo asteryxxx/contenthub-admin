@@ -28,15 +28,15 @@ export const getShowfansLists = (params) => {
 }
 // 移除粉丝
 export const deletefan = (id) => {
-   return request({
+  return request({
     method: 'DELETE',
-    url: '/userfocus/deletefan/'+id
+    url: '/userfocus/deletefan/' + id
   }) 
 }
 // 关注用户
 export const followuser = (id) => {
-   return request({
+  return request({
     method: 'POST',
-    url: '/userfocus/followuser/'+id
+    url: '/userfocus/followuser/' + id
   }) 
 }

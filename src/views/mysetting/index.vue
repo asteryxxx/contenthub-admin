@@ -15,12 +15,12 @@
           <el-form ref="form" :model="user" :rules="rules"  label-width="auto">
         <el-form-item label="名字：" >
           <el-col :span="8">
-            <div>{{user.name}}</div>
+            <el-input v-model="user.name" readonly ></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="手机号：" >
           <el-col :span="8">
-            <div>{{user.telephone}}</div>
+            <el-input v-model="user.telephone" readonly></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="性别：" prop='sex'>

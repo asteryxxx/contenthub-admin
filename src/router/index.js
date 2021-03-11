@@ -11,6 +11,7 @@ const Publish = () => import('@/views/publish')
 const Materials = () => import('@/views/materials')
 const Comment = () => import('@/views/comment')
 const Settings = () => import('@/views/mysetting')
+const Fans = () => import('@/views/fans')
 
 Vue.use(VueRouter)
 
@@ -56,6 +57,11 @@ const routes = [
         path: '/settings',
         name: 'settings',
         component: Settings
+      },
+      {
+        path: '/fans',
+        name: 'fans',
+        component: Fans
       }
     ]
   }

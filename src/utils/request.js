@@ -25,14 +25,12 @@ request.interceptors.request.use(config => {
 })
 request.interceptors.response.use(
   function (response) {
-    console.log('200')
     // 响应码为2xx的都会进入到这里
     // 一定要把响应结果return
     return response
   },
   function (error) {
     const { status } = error.response
-    console.log('异常了：' + error)
     if (error.response && status === 401) {
       window.localStorage.removeItem('user')
       // 清除本地存储的用户登陆状态
