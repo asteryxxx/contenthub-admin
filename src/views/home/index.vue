@@ -1,6 +1,6 @@
 <template>
   <div class='home-container'>
-   <el-upload
+   <!-- <el-upload
     class="upload-demo"
     action=""
     multiple
@@ -15,23 +15,23 @@
     list-type="picture">
     <el-button size="small" type="primary">点击上传</el-button>
     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-  </el-upload>
+  </el-upload> -->
   </div>
 </template>
 <script>
-import { uploadDraft } from '@/api/upload'
+// import { uploadDraft } from '@/api/upload'
 export default {
   name: 'homeIndex',
   data () {
     return {
-      fileList: [
-        { url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
-        { url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
-        { url: 'http://localhost:8888/users/1/avatar' } 
-      ]
+    //   fileList: [
+    //     { url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
+    //     { url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' },
+    //     { url: 'http://localhost:8888/users/1/avatar' } 
+    //   ]
     }
-  },
-  methods: {
+  }
+  /* methods: {
     // 上传文件之前的钩子，参数为file
     // 若返回 false 或者返回 Promise 且被 reject，则停止上传
     // beforeupload在change前面执行
@@ -81,7 +81,7 @@ export default {
       const res = await uploadDraft(formData)
       this.fileList.push({ url: res.data.url[0] })
     }
-  }
+  } */
   /* 当我上传图片的时候，先执行change事件，然后根据图片的数量
   他的list会产生变化，然后我们手动调用request方法，他就会去
   执行httpRequest方法，然后我们得到上传后的图片地址，然后
@@ -89,4 +89,8 @@ export default {
 }
 </script>
 <style scoped lang='less'>
+.home-container {
+  background-image: url('./bg.jpg');
+  height:560px
+}
 </style>

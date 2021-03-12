@@ -9,10 +9,10 @@
         </el-breadcrumb>
         <!-- /面包屑路径导航 -->
       </div>
-      <el-row :gutter="20">
-       <el-col :span="16">
+      <el-row :gutter="20" >
+       <el-col :span="16" :push='2'>
           <!-- 表单 -->
-          <el-form ref="form" :model="user" :rules="rules"  label-width="auto">
+      <el-form ref="form" :model="user" :rules="rules"  label-width="auto">
         <el-form-item label="名字：" >
           <el-col :span="8">
             <el-input v-model="user.name" readonly ></el-input>
@@ -30,7 +30,7 @@
           </el-col>
         </el-form-item>
         <el-form-item label="介绍签名：" prop='sign'>
-          <el-col :span="16">
+          <el-col :span="16" >
             <el-input
              type="textarea"
              :rows="2"
@@ -42,10 +42,10 @@
           <el-button type="primary" @click="submitUser('form')">
             保存</el-button>
         </el-form-item>
-     </el-form>
+      </el-form>
           <!-- /表单 -->
        </el-col>
-       <el-col :span="8">
+       <el-col :span="8" :pull='1'>
          <el-image
            style="width: 100px; height: 100px"
            :src="user.avatar_url"
@@ -224,4 +224,10 @@ export default {
     height:200px;
   }
 }
+/* /deep/ .el-card__body {
+  .el-row{
+    margin-left: 74px;
+    margin-right: 27px;
+  }
+} */
 </style>

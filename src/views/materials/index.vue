@@ -40,6 +40,7 @@
           </el-dialog>
       </div>
       <!-- 参照了 Bootstrap 的 响应式设计，预设了五个响应尺寸：xs、sm、md、lg 和 xl。 -->
+    <template v-if="totalCount>0">
     <el-row :gutter="20" class='elrow'>
       <el-col :xs="12" :sm="6" :md="6" :lg="4" v-for="(img, index) in images" :key="index">
         <div class='Pic'>
@@ -77,6 +78,13 @@
        @current-change='onCurrentchange'
        :current-page.sync='currentPage'>
       </el-pagination>
+    </template>
+    <template v-else>
+         <el-alert
+          title="你当前没有收藏过图片，你可以点击全部信息收藏图片~~亲(づ￣3￣)づ╭❤～"
+          type="warning">
+        </el-alert>
+    </template>
 </el-card>
   </div>
 </template>
@@ -198,7 +206,7 @@ export default {
         offset,
         size: this.pageSize
       })
-      const imagetemp = res.data.data.result
+      const imagetemp = res.data.data.results
       for (const img of imagetemp) {
         img.collectBolean = JSON.parse(img.isCollected)
         // 这样才会把原来'false'转成boolean类型
@@ -208,14 +216,18 @@ export default {
       this.images = imagetemp
       this.totalCount = res.data.data.totalCount
     },
+    // 查看用户收藏图片
     async loadCollectMaterials (offset = 1) {
       const res = await getUserMaterials({
         offset,
         size: this.pageSize
       })
-      const imagetemp = res.data.data.result
-      for (const img of imagetemp) {
-        img.collectBolean = Boolean(img.isCollected)
+      console.log(res)
+      const imagetemp = res.data.data.results
+      if (res.data.data.totalCount) {
+        for (const img of imagetemp) {
+          img.collectBolean = Boolean(img.isCollected)
+        } 
       }
       this.images = imagetemp
       this.totalCount = res.data.data.totalCount
